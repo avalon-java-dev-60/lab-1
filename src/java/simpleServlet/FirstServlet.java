@@ -39,7 +39,7 @@ public class FirstServlet extends HttpServlet {
         Matcher m = r.matcher(text);
         String content = "";
         if (text == null || text.trim().isEmpty()) {
-            content = "<h1>Повторите ввод</h1>";
+            request.getRequestDispatcher("again.html").forward(request, response);
         } else if (m.find()) {
             content = getRandomDigit(m);
         } else {
