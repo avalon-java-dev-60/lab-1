@@ -7,7 +7,6 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,27 +34,23 @@ public class CountServlet extends HttpServlet {
         String text = request.getParameter("text");
         String result = "";
         if (text.isEmpty()){
-            request.getRequestDispatcher("index.html").forward(request, response);
+            request.getRequestDispatcher("repeat.html").forward(request, response);
         }else{
             text = text.trim();
-            String[] words = text.split(" ");
-            if (words.length == 1){
-                int i = 0;
-                if (words[0].charAt(i) == '-'){
-                    i++;
+            if (text.matches("[+-]?\\d+")){
+                if (text.startsWith("-")){
+                    text = text.replace("-", "+");
                 }
-                while( i < words[0].length()){
-                    if (words[0].charAt(i) < '0' || words[0].charAt(i) > '9') break;
-                    i++;
-                } 
-                if (i < words[0].length()){
-                    result = Integer.toString(words.length);
+                result = "greater number: " + text + "0";
+            }else{                
+                String[] words = text.split("\\W+");
+                if (words[0].isEmpty()){
+                    result = Integer.toString(words.length - 1);
                 }else{
-                    result = words[0] + "0";
+                    result = Integer.toString(words.length);
                 }
-                
-            }else{
-                result = Integer.toString(words.length);
+                result = "<p> your string:  " + text + "</p>"
+                        + "<p> number of words: " + result + "</p>";               
             }
         }
         
@@ -67,7 +62,7 @@ public class CountServlet extends HttpServlet {
             out.println("<title>Result</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Result = " + result + "</h1>");
+            out.println("<h1>" + result + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
