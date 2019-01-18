@@ -7,6 +7,7 @@ package Lab1_Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,20 +29,69 @@ public class Lab1_Servlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Lab1_Servlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Lab1_Servlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            throws ServletException, IOException
+    {
+        String strIn=request.getParameter("text");
+        strIn=strIn.trim();
+        String strOut;
+        int intIn;
+        int intOut;
+        Random rand = new Random();
+        if (strIn.isEmpty())
+        {
+            response.sendRedirect("index.html");
         }
+        else
+        {
+            try {intIn=Integer.parseInt(strIn);}
+            catch (NumberFormatException e) {intIn=-1;}
+            if(intIn!=-1)
+            {
+                intOut=intIn+rand.nextInt(3000);
+                strOut="Old number: "+intIn+"<br>New number: "+intOut;
+            }
+            else
+            {
+                String[]tmp=strIn.split("\\s+");
+                strOut="String: "+strIn+"<br>Amount of words: "+tmp.length;
+            }
+            try (PrintWriter out = response.getWriter())
+            {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                //out.println("<meta charset=\"windows-1251\">");
+                out.println("<h1>Servlet: Lab1_Servlet at " + request.getContextPath() + "</h1><br><br>");           
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h2> " + strOut + "</h2>");
+                out.println("</body>");
+                out.println("</html>");
+                out.close();
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+//        response.setContentType("text/html;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter())
+//        {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet Lab1_Servlet</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet Lab1_Servlet at " + request.getContextPath() + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
